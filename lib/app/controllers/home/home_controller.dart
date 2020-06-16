@@ -1,6 +1,8 @@
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:minhaspautas/app/controllers/login/login_controller.dart';
 import 'package:minhaspautas/app/controllers/pauta/pauta_controller.dart';
 import 'package:minhaspautas/app/models/pauta_model.dart';
+import 'package:minhaspautas/app/models/user_model.dart';
 import 'package:minhaspautas/app/shared/enums/app_enums.dart';
 import 'package:mobx/mobx.dart';
 
@@ -12,6 +14,9 @@ abstract class _HomeControllerBase with Store {
   PautaController _pautaController = Modular.get<PautaController>();
 
   List<Pauta> _listaPauta;
+
+  @observable
+  User usuarioLogado;
 
   @observable
   List<Pauta> listaSelecionada;
@@ -51,7 +56,7 @@ abstract class _HomeControllerBase with Store {
   @action
   adicionarPautaLista(Pauta pauta) {
     _listaPauta.add(pauta);
-    alterarAbaSelecionada(StatusPautaSelecionada.spsAberta);    
+    alterarAbaSelecionada(StatusPautaSelecionada.spsAberta);
   }
 
   @action
@@ -65,7 +70,7 @@ abstract class _HomeControllerBase with Store {
 
   @action
   void alterarAbaSelecionada(StatusPautaSelecionada abaSelecionada) {
-    this.abaSelecionada = abaSelecionada;    
+    this.abaSelecionada = abaSelecionada;
     atualizarListaSelecionada();
   }
 
@@ -73,9 +78,14 @@ abstract class _HomeControllerBase with Store {
   Future<void> alterStatusPauta(int indexPauta) async {
     listaSelecionada[indexPauta].finalizada =
         !listaSelecionada[indexPauta].finalizada;
-    var pautaUpdate = listaSelecionada[indexPauta];    
-    atualizarListaSelecionada();    
-        
-    await _pautaController.updatePauta(pautaUpdate);    
+    var pautaUpdate = listaSelecionada[indexPauta];
+    atualizarListaSelecionada();
+
+    await _pautaController.updatePauta(pautaUpdate);
+  }
+
+  @action
+  Future<void> obterUsuarioLogado() async {
+    usuarioLogado = await Modular.get<LoginController>().usuarioLogado();
   }
 }

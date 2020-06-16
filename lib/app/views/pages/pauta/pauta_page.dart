@@ -31,6 +31,7 @@ class _PautaPageState extends State<PautaPage> {
         ),
         body: SingleChildScrollView(
           child: Observer(
+            name: "pautapage",
             builder: (context) {
               return Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -62,24 +63,27 @@ class _PautaPageState extends State<PautaPage> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    RaisedButton(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: 45,
-                        alignment: Alignment.center,
-                        child: Text(
-                          "Adicionar",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ),
-                      onPressed: _pautaController.enableAddButton
-                          ? () async =>
-                              Modular.to.pop(await _pautaController.addPauta())
-                          : null,
-                    ),
+                    _pautaController.inserindoNovaPauta
+                        ? CircularProgressIndicator()
+                        : RaisedButton(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Container(
+                              width: MediaQuery.of(context).size.width,
+                              height: 45,
+                              alignment: Alignment.center,
+                              child: Text(
+                                "Adicionar",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 18),
+                              ),
+                            ),
+                            onPressed: _pautaController.enableAddButton
+                                ? () async => Modular.to
+                                    .pop(await _pautaController.addPauta())
+                                : null,
+                          ),
                     SizedBox(height: 10),
                     RaisedButton(
                       shape: RoundedRectangleBorder(

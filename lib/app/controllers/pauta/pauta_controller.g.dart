@@ -17,6 +17,22 @@ mixin _$PautaController on _PautaControllerBase, Store {
               name: '_PautaControllerBase.enableAddButton'))
           .value;
 
+  final _$inserindoNovaPautaAtom =
+      Atom(name: '_PautaControllerBase.inserindoNovaPauta');
+
+  @override
+  bool get inserindoNovaPauta {
+    _$inserindoNovaPautaAtom.reportRead();
+    return super.inserindoNovaPauta;
+  }
+
+  @override
+  set inserindoNovaPauta(bool value) {
+    _$inserindoNovaPautaAtom.reportWrite(value, super.inserindoNovaPauta, () {
+      super.inserindoNovaPauta = value;
+    });
+  }
+
   final _$tituloAtom = Atom(name: '_PautaControllerBase.titulo');
 
   @override
@@ -61,6 +77,13 @@ mixin _$PautaController on _PautaControllerBase, Store {
     _$descricaoResumidaAtom.reportWrite(value, super.descricaoResumida, () {
       super.descricaoResumida = value;
     });
+  }
+
+  final _$addPautaAsyncAction = AsyncAction('_PautaControllerBase.addPauta');
+
+  @override
+  Future<Pauta> addPauta() {
+    return _$addPautaAsyncAction.run(() => super.addPauta());
   }
 
   final _$_PautaControllerBaseActionController =
@@ -113,6 +136,7 @@ mixin _$PautaController on _PautaControllerBase, Store {
   @override
   String toString() {
     return '''
+inserindoNovaPauta: ${inserindoNovaPauta},
 titulo: ${titulo},
 descricao: ${descricao},
 descricaoResumida: ${descricaoResumida},

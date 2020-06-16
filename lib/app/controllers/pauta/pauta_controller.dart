@@ -16,6 +16,9 @@ abstract class _PautaControllerBase with Store {
   }
 
   @observable
+  bool inserindoNovaPauta = false;
+
+  @observable
   String titulo = '';
   @observable
   String descricao = '';
@@ -33,6 +36,7 @@ abstract class _PautaControllerBase with Store {
     titulo = '';
     descricao = '';
     descricaoResumida = '';
+    inserindoNovaPauta = false;
   }
 
   @action
@@ -44,20 +48,26 @@ abstract class _PautaControllerBase with Store {
   @action
   void setDescricaoResumida(String descricaoResumida) =>
       this.descricaoResumida = descricaoResumida;
-
+  
+  @action
   Future<Pauta> addPauta() async {
-    var usuarioLogado = await Modular.get<LoginController>().usuarioLogado();
-    
-    var pauta = Pauta(
-        autor: usuarioLogado.name,
-        titulo: this.titulo,
-        descricao: this.descricao,
-        descricaoResumida: this.descricaoResumida,
-        finalizada: false);
+    inserindoNovaPauta = true;
+    try {
+      var usuarioLogado = await Modular.get<LoginController>().usuarioLogado();
 
-    pauta.id = await _pautaRepository.add(pauta);    
+      var pauta = Pauta(
+          autor: usuarioLogado.name,
+          titulo: this.titulo,
+          descricao: this.descricao,
+          descricaoResumida: this.descricaoResumida,
+          finalizada: false);
 
-    return pauta;
+      pauta.id = await _pautaRepository.add(pauta);
+
+      return pauta;
+    } finally {
+      inserindoNovaPauta = false;
+    }
   }
 
   Future<List<Pauta>> getAllPautas() async => await _pautaRepository.getAll();

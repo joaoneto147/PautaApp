@@ -62,32 +62,36 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  RaisedButton(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 45,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Cadastrar",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ),
-                    onPressed: _controller.habilitarCadastroButton
-                        ? () async {
-                            await _controller.registrar().catchError(
-                              (error) {
-                                var scnackbar = SnackBar(
-                                  content: Text(error.message),
-                                );
-                                Scaffold.of(context).showSnackBar(scnackbar);
-                              },
-                            );
-                          }
-                        : null,
-                  ),
+                  _controller.registrandoUsuario
+                      ? CircularProgressIndicator()
+                      : RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 45,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Cadastrar",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                          onPressed: _controller.habilitarCadastroButton
+                              ? () async {
+                                  await _controller.registrar().catchError(
+                                    (error) {
+                                      var scnackbar = SnackBar(
+                                        content: Text(error.message),
+                                      );
+                                      Scaffold.of(context)
+                                          .showSnackBar(scnackbar);
+                                    },
+                                  );
+                                }
+                              : null,
+                        ),
                 ],
               ),
             );

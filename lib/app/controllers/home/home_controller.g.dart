@@ -9,6 +9,21 @@ part of 'home_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeController on _HomeControllerBase, Store {
+  final _$usuarioLogadoAtom = Atom(name: '_HomeControllerBase.usuarioLogado');
+
+  @override
+  User get usuarioLogado {
+    _$usuarioLogadoAtom.reportRead();
+    return super.usuarioLogado;
+  }
+
+  @override
+  set usuarioLogado(User value) {
+    _$usuarioLogadoAtom.reportWrite(value, super.usuarioLogado, () {
+      super.usuarioLogado = value;
+    });
+  }
+
   final _$listaSelecionadaAtom =
       Atom(name: '_HomeControllerBase.listaSelecionada');
 
@@ -103,6 +118,15 @@ mixin _$HomeController on _HomeControllerBase, Store {
         .run(() => super.alterStatusPauta(indexPauta));
   }
 
+  final _$obterUsuarioLogadoAsyncAction =
+      AsyncAction('_HomeControllerBase.obterUsuarioLogado');
+
+  @override
+  Future<void> obterUsuarioLogado() {
+    return _$obterUsuarioLogadoAsyncAction
+        .run(() => super.obterUsuarioLogado());
+  }
+
   final _$_HomeControllerBaseActionController =
       ActionController(name: '_HomeControllerBase');
 
@@ -153,6 +177,7 @@ mixin _$HomeController on _HomeControllerBase, Store {
   @override
   String toString() {
     return '''
+usuarioLogado: ${usuarioLogado},
 listaSelecionada: ${listaSelecionada},
 statusPautaSelected: ${statusPautaSelected},
 indexPautaExp: ${indexPautaExp},

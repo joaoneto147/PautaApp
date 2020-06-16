@@ -17,6 +17,22 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
               name: '_RegisterControllerBase.habilitarCadastroButton'))
       .value;
 
+  final _$registrandoUsuarioAtom =
+      Atom(name: '_RegisterControllerBase.registrandoUsuario');
+
+  @override
+  bool get registrandoUsuario {
+    _$registrandoUsuarioAtom.reportRead();
+    return super.registrandoUsuario;
+  }
+
+  @override
+  set registrandoUsuario(bool value) {
+    _$registrandoUsuarioAtom.reportWrite(value, super.registrandoUsuario, () {
+      super.registrandoUsuario = value;
+    });
+  }
+
   final _$emailAtom = Atom(name: '_RegisterControllerBase.email');
 
   @override
@@ -62,6 +78,14 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
     });
   }
 
+  final _$registrarAsyncAction =
+      AsyncAction('_RegisterControllerBase.registrar');
+
+  @override
+  Future<void> registrar() {
+    return _$registrarAsyncAction.run(() => super.registrar());
+  }
+
   final _$_RegisterControllerBaseActionController =
       ActionController(name: '_RegisterControllerBase');
 
@@ -101,6 +125,7 @@ mixin _$RegisterController on _RegisterControllerBase, Store {
   @override
   String toString() {
     return '''
+registrandoUsuario: ${registrandoUsuario},
 email: ${email},
 senha: ${senha},
 nome: ${nome},

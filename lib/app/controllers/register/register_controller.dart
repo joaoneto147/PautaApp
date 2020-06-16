@@ -21,6 +21,9 @@ abstract class _RegisterControllerBase with Store {
   }
 
   @observable
+  bool registrandoUsuario = false;
+
+  @observable
   String email = "";
 
   @observable
@@ -31,36 +34,40 @@ abstract class _RegisterControllerBase with Store {
 
   @computed
   bool get habilitarCadastroButton =>
-      this.email.isNotEmpty &&
-      this.senha.isNotEmpty &&
-      this.nome.isNotEmpty;
-      
-  @action
-  void setNome(String nome) => this.nome = nome;     
+      this.email.isNotEmpty && this.senha.isNotEmpty && this.nome.isNotEmpty;
 
   @action
-  void setEmail(String email) => this.email = email;      
+  void setNome(String nome) => this.nome = nome;
 
   @action
-  void setSenha(String senha) => this.senha = senha;     
+  void setEmail(String email) => this.email = email;
 
+  @action
+  void setSenha(String senha) => this.senha = senha;
+
+  @action
   Future<void> registrar() async {
-    if (this.nome.trim().length == 0){
-      var response = DefaultResponse<String>(message: "Nome não informado!", status: ResponseStatus.rsFailed);
-      throw response;
-    }
-
-    await authRepository.registerEmailPassword(email: this.email, password: this.senha).then((response)  async {
-      if (response.success){        
-        await userRepository.add(User(
-          email: this.email,
-          name: this.nome
-        ));            
-
-        Modular.to.pushReplacementNamed(RoutersConst.login);
-      } else{
+    registrandoUsuario = true;
+    try {
+      if (this.nome.trim().length == 0) {
+        var response = DefaultResponse<String>(
+            message: "Nome não informado!", status: ResponseStatus.rsFailed);
         throw response;
-      }     
-    });
+      }
+
+      await authRepository
+          .registerEmailPassword(email: this.email, password: this.senha)
+          .then((response) async {
+        if (response.success) {
+          await userRepository.add(User(email: this.email, name: this.nome));
+
+          Modular.to.pushReplacementNamed(RoutersConst.login);
+        } else {
+          throw response;
+        }
+      });
+    } finally {
+      registrandoUsuario = false;
+    }
   }
 }

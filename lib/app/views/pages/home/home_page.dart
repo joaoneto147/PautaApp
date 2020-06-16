@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:minhaspautas/app/controllers/login/login_controller.dart';
-import 'package:minhaspautas/app/models/user_model.dart';
 import 'package:minhaspautas/app/shared/const/router_const.dart';
 import 'package:minhaspautas/app/shared/enums/app_enums.dart';
 import 'package:minhaspautas/app/views/pages/home/widgets/menu_drawer.dart';
@@ -24,11 +22,6 @@ class _HomePageState extends ModularState<HomePage, HomeController>
     with TickerProviderStateMixin {
   TabController _tabController;
   final HomeController controller = Modular.get<HomeController>();
-  User _usuarioLogado;
-
-  Future<void> obterUsuarioLogado() async {
-    _usuarioLogado = await Modular.get<LoginController>().usuarioLogado();
-  }
 
   int getQtdItens() {
     if (controller.listaSelecionada != null)
@@ -38,11 +31,11 @@ class _HomePageState extends ModularState<HomePage, HomeController>
   }
 
   @override
-  void initState() {
+  initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     controller.buscarPautas();
-    obterUsuarioLogado();
+    controller.obterUsuarioLogado();
   }
 
   @override
@@ -61,10 +54,14 @@ class _HomePageState extends ModularState<HomePage, HomeController>
         },
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-      drawer: Drawer(
-          child: MenuDrawer(
-        user: _usuarioLogado,
-      )),
+      drawer: Observer(
+        builder: (context) {
+          return Drawer(
+              child: MenuDrawer(
+            user: controller.usuarioLogado,
+          ));
+        },
+      ),
       appBar: AppBar(
         title: Text(widget.title),
         bottom: TabBar(

@@ -13,25 +13,19 @@ class AppWidget extends StatelessWidget {
       navigatorKey: Modular.navigatorKey,
       title: 'Minhas pautas',
       theme: ThemeData(
-          // primarySwatch: Color(0xff030D38),
-          // cardColor: Colors.red,
-          buttonColor: Color(0xff030D38),
-          backgroundColor: Color(0xff030D38),
-          // backgroundColor: Colors.red,
-          appBarTheme: AppBarTheme(
-            color: Color(0xff030D38)
-
-            // #030D38
+        buttonColor: Color(0xff030D38),
+        backgroundColor: Color(0xff030D38),
+        appBarTheme: AppBarTheme(color: Color(0xff030D38)),
+        accentColor: Color(0xff030D38),
+        inputDecorationTheme: InputDecorationTheme(
+          contentPadding: EdgeInsets.only(left: 10),
+          hintStyle: TextStyle(),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10.0),
+            borderSide: BorderSide(color: Colors.grey),
           ),
-          accentColor: Color(0xff030D38),
-          inputDecorationTheme: InputDecorationTheme(
-            contentPadding: EdgeInsets.only(left: 10),
-            hintStyle: TextStyle(),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: BorderSide(color: Colors.grey),
-            ),
-          )),
+        ),
+      ),
       initialRoute: '/',
       onGenerateRoute: Modular.generateRoute,
     );
