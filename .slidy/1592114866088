@@ -1,0 +1,2 @@
+lib/app/controllers/pauta_controller.dart
+test/app/controllers/pauta_controller_test.dart
