@@ -1,6 +1,10 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:minhaspautas/app/controllers/login/login_controller.dart';
+import 'package:minhaspautas/app/models/user_model.dart';
 import 'package:minhaspautas/app/shared/const/router_const.dart';
 import 'package:minhaspautas/app/shared/enums/app_enums.dart';
 import 'package:minhaspautas/app/views/pages/home/widgets/menu_drawer.dart';
@@ -19,18 +23,32 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends ModularState<HomePage, HomeController>
     with TickerProviderStateMixin {
   TabController _tabController;
-  final HomeController controller = Modular.get();
+  final HomeController controller = Modular.get<HomeController>();
+  User _usuarioLogado;
+
+  Future<void> obterUsuarioLogado() async {
+    _usuarioLogado = await Modular.get<LoginController>().usuarioLogado();
+  }
+
+  int getQtdItens() {
+    if (controller.listaSelecionada != null)
+      return max(controller.listaSelecionada.length, 1);
+    else
+      return 1;
+  }
 
   @override
   void initState() {
     super.initState();
     _tabController = TabController(vsync: this, length: 2);
     controller.buscarPautas();
+    obterUsuarioLogado();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).cardColor,
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () async {
@@ -44,10 +62,11 @@ class _HomePageState extends ModularState<HomePage, HomeController>
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       drawer: Drawer(
-        child: MenuDrawer()
-      ),
+          child: MenuDrawer(
+        user: _usuarioLogado,
+      )),
       appBar: AppBar(
-        title: Text(widget.title),        
+        title: Text(widget.title),
         bottom: TabBar(
           indicatorColor: Colors.white,
           labelColor: Colors.white,
@@ -63,28 +82,46 @@ class _HomePageState extends ModularState<HomePage, HomeController>
           ],
         ),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Observer(
-            builder: (_) =>
-                controller.statusConsulta == StatusConsulta.scConsultando
+      body: GestureDetector(
+        onHorizontalDragUpdate: (detail) {
+          final double sense = 1.8;
+          if (_tabController.index == 0 && detail.delta.dx < -sense) {
+            controller.alterarAbaSelecionada(StatusPautaSelecionada.spsFechada);
+            _tabController.animateTo(StatusPautaSelecionada.spsFechada.index);
+          } else if (_tabController.index == 1 && detail.delta.dx > sense) {
+            _tabController.animateTo(StatusPautaSelecionada.spsAberta.index);
+            controller.alterarAbaSelecionada(StatusPautaSelecionada.spsAberta);
+          }
+        },
+        child: RefreshIndicator(
+          onRefresh: controller.buscarPautas,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Observer(builder: (context) {
+                int qtdItens = getQtdItens();
+                return controller.statusConsulta == StatusConsulta.scConsultando
                     ? Center(child: CircularProgressIndicator())
-                    : controller.listaSelecionada.length > 0
-                        ? Expanded(
-                            child: new ListView.builder(
-                              padding: EdgeInsets.zero,
-                              itemCount: controller.listaSelecionada.length,
-                              itemBuilder: (BuildContext context, int i) {
-                                return CardPautaWidget(index: i);
-                              },
-                            ),
-                          )
-                        : Center(
-                            child: Text("Nenhuma pauta para exibir!"),
-                          ),
+                    : Expanded(
+                        child: ListView.builder(
+                          padding: EdgeInsets.zero,
+                          itemCount: qtdItens,
+                          itemBuilder: (BuildContext context, int i) {
+                            return controller.listaSelecionada.length > 0
+                                ? CardPautaWidget(index: i)
+                                : Center(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 20.0),
+                                      child: Text("Nenhum item para exibir"),
+                                    ),
+                                  );
+                          },
+                        ),
+                      );
+              }),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

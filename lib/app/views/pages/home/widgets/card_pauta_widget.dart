@@ -4,8 +4,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:minhaspautas/app/controllers/home/home_controller.dart';
 
 class CardPautaWidget extends StatelessWidget {
-  final HomeController controller = Modular.get();
-
   final int index;
 
   CardPautaWidget({
@@ -15,6 +13,7 @@ class CardPautaWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final HomeController controller = Modular.get<HomeController>();
     return Observer(
       builder: (_) => Card(
         margin: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0.0),
@@ -29,30 +28,25 @@ class CardPautaWidget extends StatelessWidget {
           children: [
             new ExpansionPanel(
               isExpanded: controller.indexPautaExp == index,
+              canTapOnHeader: true,
               headerBuilder: (BuildContext context, bool isExpanded) => Padding(
-                padding: const EdgeInsets.only(top: 2, left: 10),
+                padding: const EdgeInsets.only(left: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       controller.listaSelecionada[index].titulo,
                       textAlign: TextAlign.left,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
                     ),
-                    RichText(
-                      textAlign: TextAlign.justify,
-                      text: TextSpan(
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
-                        children: <TextSpan>[
-                          TextSpan(
-                            style: TextStyle(color: Colors.grey),
-                            text: controller.listaSelecionada[index].descricaoResumida,
-                          ),
-                        ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: Text(
+                        controller.listaSelecionada[index].descricaoResumida,
+                        textAlign: TextAlign.justify,
+                        style: TextStyle(color: Colors.grey),
                       ),
                     ),
                   ],
@@ -61,8 +55,10 @@ class CardPautaWidget extends StatelessWidget {
               body: Padding(
                 padding: const EdgeInsets.only(left: 15.0, right: 15.0),
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,                  
                   children: <Widget>[
                     Divider(
+                      thickness: 1,
                       color: Colors.black,
                     ),
                     Text(
@@ -70,7 +66,7 @@ class CardPautaWidget extends StatelessWidget {
                       textAlign: TextAlign.justify,
                     ),
                     Container(
-                      padding: EdgeInsets.only(top: 8.0, left: 8.0),
+                      padding: EdgeInsets.only(top: 10.0),
                       alignment: Alignment.centerRight,
                       child: Text(
                         controller.listaSelecionada[index].autor,
@@ -78,16 +74,20 @@ class CardPautaWidget extends StatelessWidget {
                       ),
                     ),
                     Container(
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
                       alignment: Alignment.centerRight,
                       child: FlatButton(
+                        textColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(7),
+                        ),
                         color: controller.listaSelecionada[index].finalizada
                             ? Colors.red
                             : Colors.green,
                         child: Text(
                             controller.listaSelecionada[index].finalizada
                                 ? "Reabrir"
-                                : "Finalizar",
-                            textAlign: TextAlign.end),
+                                : "Finalizar"),
                         onPressed: () => controller.alterStatusPauta(index),
                       ),
                     ),

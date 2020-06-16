@@ -67,4 +67,15 @@ class AuthRepository implements IAuthRepository {
           object: e, message: e.code, errorInterceptor: ErrorInterceptor());
     }
   }
+
+  @override
+  Future<DefaultResponse> sendPasswordResetEmail({String email}) async {
+    try {    
+      await firebaseAuth.sendPasswordResetEmail(email: email);
+      return ResponseBuilder.success();
+    } catch (e) {
+      return ResponseBuilder.failed(
+          object: e, message: e.code, errorInterceptor: ErrorInterceptor());
+    }
+  }
 }

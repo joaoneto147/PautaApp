@@ -5,7 +5,6 @@ import 'package:minhaspautas/app/repositories/auth_repository.dart';
 
 import 'package:minhaspautas/app/repositories/pauta_repository.dart';
 import 'package:minhaspautas/app/repositories/user_repository.dart';
-import 'package:minhaspautas/app/views/pages/home/widgets/menu_drawer.dart';
 
 import 'app_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -13,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:minhaspautas/app/app_widget.dart';
 
 import 'interfaces/iauth_repository.dart';
+import 'views/pages/recorvery/recuperar_senha_page.dart';
 import 'views/pages/splash/splash_page.dart';
 import 'shared/const/router_const.dart';
 import 'modules/home_module.dart';
@@ -58,6 +58,10 @@ class AppModule extends MainModule {
         Router(
           RoutersConst.register,
           module: RegisterModule(),
+        ),
+        Router(
+          RoutersConst.recuperarSenha,
+          child: (_, args) => RecuperarSenhaPage(),
         ),
         Router(
           RoutersConst.pauta,

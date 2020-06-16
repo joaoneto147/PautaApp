@@ -20,7 +20,7 @@ class _SplashPageState extends State<SplashPage> {
   }
 
   Future<void> checkUserStatus() async {
-    //await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 3));
     IAuthRepository repostory = Modular.get();
     var response = await repostory.getUser();
     FirebaseUser user = response.object;
@@ -40,9 +40,15 @@ class _SplashPageState extends State<SplashPage> {
           width: MediaQuery.of(context).size.width,
           height: MediaQuery.of(context).size.height,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Image.asset("assets/logo-branco.png"),
-              CircularProgressIndicator(backgroundColor: Colors.white),
+              Image.asset(
+                "assets/logo-branco.png",
+                width: MediaQuery.of(context).size.width * 0.65,
+                height: MediaQuery.of(context).size.height *0.65,
+              ),
+              // CircularProgressIndicator(backgroundColor: Colors.white),
             ],
           ),
         ));

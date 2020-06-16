@@ -14,17 +14,25 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
+
     _controller = Modular.get<LoginController>();
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    _controller.limparCampos();
     return Scaffold(
       appBar: AppBar(
         title: Text("Entrar"),
       ),
       body: SingleChildScrollView(
         child: Observer(
+          name: "loginpage",
           builder: (context) {
             return Padding(
               padding: const EdgeInsets.all(20.0),
@@ -32,8 +40,6 @@ class _LoginPageState extends State<LoginPage> {
                 children: <Widget>[
                   Image.asset(
                     "assets/login.png",
-                    height: MediaQuery.of(context).size.height / 4,
-                    width: MediaQuery.of(context).size.width / 2,
                   ),
                   SizedBox(height: 20),
                   TextField(
@@ -61,36 +67,39 @@ class _LoginPageState extends State<LoginPage> {
                       padding: EdgeInsets.zero,
                       child:
                           Text("Esqueceu sua senha?", textAlign: TextAlign.end),
-                      onPressed: () {},
+                      onPressed: _controller.doRecovery,
                     ),
                   ),
-                  RaisedButton(
-                    color: Colors.blue,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 45,
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Entrar",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ),
-                    onPressed: _controller.habilitarLoginButton
-                        ? () async {
-                            await _controller.realizarLogin().catchError(
-                              (error) {
-                                var scnackbar = SnackBar(
-                                  content: Text(error.message),
-                                );
-                                Scaffold.of(context).showSnackBar(scnackbar);
-                              },
-                            );
-                          }
-                        : null,
-                  ),
+                  _controller.realizandoLogin
+                      ? CircularProgressIndicator()
+                      : RaisedButton(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Container(
+                            width: MediaQuery.of(context).size.width,
+                            height: 45,
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Entrar",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                          ),
+                          onPressed: _controller.habilitarLoginButton
+                              ? () async {
+                                  await _controller.realizarLogin().catchError(
+                                    (error) {
+                                      var scnackbar = SnackBar(
+                                        content: Text(error.message),
+                                      );
+                                      Scaffold.of(context)
+                                          .showSnackBar(scnackbar);
+                                    },
+                                  );
+                                }
+                              : null,
+                        ),
                   SizedBox(height: 10),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,

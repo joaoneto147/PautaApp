@@ -9,11 +9,11 @@ class PautaPage extends StatefulWidget {
 }
 
 class _PautaPageState extends State<PautaPage> {
-  PautaController _pautaController;  
+  PautaController _pautaController;
 
   @override
   void initState() {
-    _pautaController = Modular.get();    
+    _pautaController = Modular.get();
     super.initState();
   }
 
@@ -63,7 +63,6 @@ class _PautaPageState extends State<PautaPage> {
                     ),
                     SizedBox(height: 10),
                     RaisedButton(
-                      color: Colors.blue,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
@@ -77,12 +76,12 @@ class _PautaPageState extends State<PautaPage> {
                         ),
                       ),
                       onPressed: _pautaController.enableAddButton
-                          ? () async => Modular.to.pop(await _pautaController.addPauta())
+                          ? () async =>
+                              Modular.to.pop(await _pautaController.addPauta())
                           : null,
                     ),
                     SizedBox(height: 10),
                     RaisedButton(
-                      color: Colors.red,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),

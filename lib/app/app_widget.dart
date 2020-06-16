@@ -6,16 +6,24 @@ class AppWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(statusBarColor: Colors.blue));
+        SystemUiOverlayStyle(statusBarColor: Color(0xff030D38)));
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: Modular.navigatorKey,
       title: 'Minhas pautas',
       theme: ThemeData(
-          primarySwatch: Colors.blue,
-          backgroundColor: Colors.blue,
-          accentColor: Colors.blueAccent,
+          // primarySwatch: Color(0xff030D38),
+          // cardColor: Colors.red,
+          buttonColor: Color(0xff030D38),
+          backgroundColor: Color(0xff030D38),
+          // backgroundColor: Colors.red,
+          appBarTheme: AppBarTheme(
+            color: Color(0xff030D38)
+
+            // #030D38
+          ),
+          accentColor: Color(0xff030D38),
           inputDecorationTheme: InputDecorationTheme(
             contentPadding: EdgeInsets.only(left: 10),
             hintStyle: TextStyle(),

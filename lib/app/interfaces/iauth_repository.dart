@@ -6,5 +6,6 @@ abstract class IAuthRepository{
       {String email, String password});
   Future<DefaultResponse> getUser();
   Future<DefaultResponse> logOut();
+  Future<DefaultResponse> sendPasswordResetEmail({String email});
   Future<String> getEmailUsuarioLogado();
 }

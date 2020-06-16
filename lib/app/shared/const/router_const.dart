@@ -4,4 +4,5 @@ class RoutersConst {
   static const String login = '/login';
   static const String pauta = '/pauta';
   static const String register = '/register';
+  static const String recuperarSenha = '/recuperarsenha';  
 }

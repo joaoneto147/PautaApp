@@ -17,6 +17,22 @@ mixin _$LoginController on _LoginControllerBase, Store {
               name: '_LoginControllerBase.habilitarLoginButton'))
       .value;
 
+  final _$realizandoLoginAtom =
+      Atom(name: '_LoginControllerBase.realizandoLogin');
+
+  @override
+  bool get realizandoLogin {
+    _$realizandoLoginAtom.reportRead();
+    return super.realizandoLogin;
+  }
+
+  @override
+  set realizandoLogin(bool value) {
+    _$realizandoLoginAtom.reportWrite(value, super.realizandoLogin, () {
+      super.realizandoLogin = value;
+    });
+  }
+
   final _$emailAtom = Atom(name: '_LoginControllerBase.email');
 
   @override
@@ -47,8 +63,51 @@ mixin _$LoginController on _LoginControllerBase, Store {
     });
   }
 
+  final _$realizarLoginAsyncAction =
+      AsyncAction('_LoginControllerBase.realizarLogin');
+
+  @override
+  Future<void> realizarLogin() {
+    return _$realizarLoginAsyncAction.run(() => super.realizarLogin());
+  }
+
+  final _$recuperarSenhaAsyncAction =
+      AsyncAction('_LoginControllerBase.recuperarSenha');
+
+  @override
+  Future<void> recuperarSenha({String email}) {
+    return _$recuperarSenhaAsyncAction
+        .run(() => super.recuperarSenha(email: email));
+  }
+
+  final _$usuarioLogadoAsyncAction =
+      AsyncAction('_LoginControllerBase.usuarioLogado');
+
+  @override
+  Future<User> usuarioLogado() {
+    return _$usuarioLogadoAsyncAction.run(() => super.usuarioLogado());
+  }
+
+  final _$deslogarAsyncAction = AsyncAction('_LoginControllerBase.deslogar');
+
+  @override
+  Future<void> deslogar() {
+    return _$deslogarAsyncAction.run(() => super.deslogar());
+  }
+
   final _$_LoginControllerBaseActionController =
       ActionController(name: '_LoginControllerBase');
+
+  @override
+  void limparCampos() {
+    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
+        name: '_LoginControllerBase.limparCampos');
+    try {
+      return super.limparCampos();
+    } finally {
+      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void setEmail(String email) {
@@ -73,8 +132,31 @@ mixin _$LoginController on _LoginControllerBase, Store {
   }
 
   @override
+  void doRegister() {
+    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
+        name: '_LoginControllerBase.doRegister');
+    try {
+      return super.doRegister();
+    } finally {
+      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void doRecovery() {
+    final _$actionInfo = _$_LoginControllerBaseActionController.startAction(
+        name: '_LoginControllerBase.doRecovery');
+    try {
+      return super.doRecovery();
+    } finally {
+      _$_LoginControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
+realizandoLogin: ${realizandoLogin},
 email: ${email},
 senha: ${senha},
 habilitarLoginButton: ${habilitarLoginButton}

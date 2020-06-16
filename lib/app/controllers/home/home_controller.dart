@@ -6,11 +6,6 @@ import 'package:mobx/mobx.dart';
 
 part 'home_controller.g.dart';
 
-const DESC_RESUMIDA =
-    'Gostaríamos de avançar contigo para próxima etapa do processo seletivo. Desta forma, abaixo e anexo seguem orientações para realização do teste prático.';
-const DESCRICAO =
-    'Pensando mais a longo prazo, o consenso sobre a necessidade de qualificação prepara-nos para enfrentar situações atípicas decorrentes do processo de comunicação como um todo.';
-
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
@@ -78,8 +73,9 @@ abstract class _HomeControllerBase with Store {
   Future<void> alterStatusPauta(int indexPauta) async {
     listaSelecionada[indexPauta].finalizada =
         !listaSelecionada[indexPauta].finalizada;
-    await _pautaController.updatePauta(listaSelecionada[indexPauta]);
-
-    atualizarListaSelecionada();
+    var pautaUpdate = listaSelecionada[indexPauta];    
+    atualizarListaSelecionada();    
+        
+    await _pautaController.updatePauta(pautaUpdate);    
   }
 }

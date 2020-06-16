@@ -31,9 +31,8 @@ class _RegisterPageState extends State<RegisterPage> {
               child: Column(
                 children: <Widget>[
                   Image.asset(
-                    "assets/logo.png",
-                    height: MediaQuery.of(context).size.height / 4,
-                    width: MediaQuery.of(context).size.width / 2,
+                    "assets/cadastrar.png",
+                    fit: BoxFit.cover,
                   ),
                   TextField(
                     onChanged: _controller.setNome,
@@ -64,7 +63,6 @@ class _RegisterPageState extends State<RegisterPage> {
                   ),
                   SizedBox(height: 10),
                   RaisedButton(
-                    color: Colors.blue,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
