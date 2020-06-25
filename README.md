@@ -25,5 +25,10 @@ If you encounter any problems feel free to open an issue. If you feel the librar
 
 ## Screenshots
 
-![HomePage](https://github.com/joaoneto147/PautaApp/blob/master/img/loginpage.jpg?raw=true)
+![LoginPage](https://github.com/joaoneto147/PautaApp/blob/master/img/loginpage.jpg?raw=true)
+![SingUp](https://github.com/joaoneto147/PautaApp/blob/master/img/singuppage.jpg)
+![RecPassword](https://github.com/joaoneto147/PautaApp/blob/master/img/recpassword.jpg)
+![HomePage](https://github.com/joaoneto147/PautaApp/blob/master/img/homepage.jpg)
+![NovaPauta](https://github.com/joaoneto147/PautaApp/blob/master/img/novapauta.jpg)
+![Menu](https://github.com/joaoneto147/PautaApp/blob/master/img/slidmenu.jpg)
 
